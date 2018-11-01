@@ -75,17 +75,22 @@ function getConfig()
 		//	default config
 		config = {
 			"url": "",
-			"secret": Math.floor(Math.random() * 1000000),
+			"secret": "",
 			"len": 12,
 			"digits": 1,
 			"lower": 1,
 			"upper": 1,
 			"symbols": 1,
+			"savesecret": false,
 			"exclude": "",
 			"similar": false,
 			"password": ""
 		};
-		window.localStorage.setItem("config", JSON.stringify(config));
+		saveConfig(config);
+	}
+	if (!config.secret)
+	{
+		config.secret = Math.floor(Math.random() * 1000000);
 	}
 	return config;
 }
@@ -148,6 +153,10 @@ function saveConfig(config)
 			saved[value] = config[value];
 		}
 	});
+	if (!config.savesecret)
+	{
+		saved.secret = "";
+	}
 	window.localStorage.setItem("config", JSON.stringify(saved));
 }
 
@@ -302,7 +311,7 @@ function getPwdData(config)
 }
 
 let srand = new seededRand(Math.random());
-let options = ["digits", "lower", "upper", "symbols", "len", "secret", "subdomains", "exclude", "similar"];
+let options = ["digits", "lower", "upper", "symbols", "len", "secret", "subdomains", "exclude", "similar", "savesecret"];
 let config = {};
 
 let generatePwd = function()
