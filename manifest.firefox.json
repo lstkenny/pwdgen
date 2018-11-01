@@ -1,0 +1,29 @@
+{
+	"name": "Password generator",
+	"version": "1.0",
+	"manifest_version": 2,
+	"description": "A strong password keeper and generator based on seeded random numbers",
+	"icons": {
+		"16": "media/icon_16.png",
+		"19": "media/icon_19.png",
+		"48": "media/icon_48.png",
+		"128": "media/icon_128.png"
+	},
+	"permissions": [
+		"activeTab",
+		"tabs",
+		"clipboardWrite",
+		"http://*/*",
+		"https://*/*"
+	],
+	"browser_action": {
+		"default_icon": "media/icon_48.png",
+		"default_title": "Password generator",
+		"default_popup": "popup.html"
+	},
+	"applications": {
+		"gecko": {
+			"id": "lstkenny@gmail.com"
+		}
+	}
+}
