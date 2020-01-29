@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Password generator options</title>
+	<meta name="description" content="Password generator options">
+	<meta name="author" content="lstkenny">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="css/night.css" id="theme">
+</head>
+<body>
+	<div id="container">
+		<form id="pwg_config">
+			<h4>Password options</h4>
+			<ul>
+				<li>
+					<span class="opt_name">Remember for each domain</span>
+					<label class="switch">
+						<input type="radio" name="rememberSettings" value="domains">
+						<span class="slider round" title="Remember password options for each domain"></span>
+					</label>
+				</li>
+				<li>
+					<span class="opt_name">Remember last options</span>
+					<label class="switch">
+						<input type="radio" name="rememberSettings" value="common">
+						<span class="slider round" title="Remember last password options"></span>
+					</label>
+				</li>
+				<li>
+					<span class="opt_name">Do not remember</span>
+					<label class="switch">
+						<input type="radio" name="rememberSettings" value="">
+						<span class="slider round" title="Do not store password options"></span>
+					</label>
+				</li>
+			</ul>
+			<hr>
+			<h4>Secret word</h4>
+			<ul>
+				<li>
+					<span class="opt_name">Remember secret</span>
+					<label class="switch">
+						<input type="radio" name="rememberSecret" value="remember">
+						<span class="slider round" title="Remember secret word"></span>
+					</label>
+				</li>
+				<li>
+					<span class="opt_name">Keep secret during session</span>
+					<label class="switch">
+						<input type="radio" id="sessionSwitch" name="rememberSecret" value="session">
+						<span class="slider round" title="Remember secret word during current session"></span>
+					</label>
+				</li>
+				<li id="sessionInput" class="hidden">
+					<span class="opt_name">Session length in hours</span>
+					<input name="sessionHours" value="1" placeholder="Session length in hours" title="How many hours your session will last">
+				</li>
+				<li>
+					<span class="opt_name">Do not store secret word</span>
+					<label class="switch">
+						<input type="radio" name="rememberSecret" value="">
+						<span class="slider round" title="Do not store secret word"></span>
+					</label>
+				</li>
+			</ul>
+			<hr>
+			<h4>Autocomplete</h4>
+			<ul>
+				<li>
+					<span class="opt_name">Fill in password fields</span>
+					<label class="switch">
+						<input type="checkbox" name="autocomplete" value="1">
+						<span class="slider" title="Autocomplete password fields on the website"></span>
+					</label>
+				</li>
+			</ul>
+			<hr>
+			<h4>Theme</h4>
+			<ul>
+				<li>
+					<span class="opt_name">Night theme</span>
+					<label class="switch">
+						<input type="checkbox" name="theme" value="night">
+						<span class="slider" title="Switch theme colors"></span>
+					</label>
+				</li>
+			</ul>
+<!--
+			<hr>
+			<ul>
+				<li class="center">
+					<button id="close">OK</button>
+					<button id="reset" class="danger">Reset settings</button>
+				</li>
+			</ul>
+-->
+		</form>
+	</div>
+	<script type="module" src="./js/options.js"></script>
+</body>
+</html>

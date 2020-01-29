@@ -1,0 +1,49 @@
+body {
+  color: #F8F8F0;
+  background-color: #272822;
+}
+input {
+	border-color: #666;
+  color: #E6DB74;
+  background-color: #272822;
+}
+input:hover,
+input:focus,
+input:active {
+	border-color: #66D9EF;
+}
+button {
+	background: #66D9EF;
+	color: #000;
+}
+button.danger {
+  background: #F92672;
+}
+a {
+	color: #66D9EF;
+}
+a.icon {
+  color: #66D9EF;
+}
+hr {
+    background: #444;
+    background-image: linear-gradient(to right, #444, #ccc, #444);
+}
+.pwg_error {
+	border-color: #F92672!important;
+}
+#pwg_msg {
+	color: #F92672;
+}
+.slider {
+  background-color: #666;
+}
+.slider:before {
+  background-color: #272822;
+}
+input:checked + .slider {
+  background-color: #66D9EF;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #66D9EF;
+}

@@ -1,38 +1,61 @@
 body {
 	font-size: 14px;
 	font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  background-color: #fff;
 }
 #container {
-	width: 250px;
+  min-width: 250px;
+  max-width: 600px;
+  margin: 0 auto;
+	padding: 0 10px;
 }
 input, button {
     margin: 0;
+    padding: 2px 4px;
     vertical-align: middle;
     font-size: 14px;
 }
 input {
-	border: 1px solid #444;
+	border: 2px solid #666;
 	height: 20px;
-    font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+  color: #000;
+  background-color: #fff;
+  font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+  font-weight: 600;
 }
 input:hover,
 input:focus,
 input:active {
-	border: 1px solid #2196F3;
+	border: 2px solid #09f;
 	outline: none;
 }
 button {
-	background: #2196F3;
+	background: #09f;
 	color: #fff;
 	border: none;
+  min-width: 100px;
 	height: 30px;
 	padding: 4px 10px;
+  margin: 0 5px;
 }
 a {
-	color: #2196F3;
+	color: #09f;
+}
+a.icon {
+  display: inline-block;
+  float: right;
+  font-size: 19px;
+  color: #09f;
+  text-decoration: none;
 }
 h2 {
 	text-align: center;
+}
+h4 {
+  margin: 1em 0;
+  font-size: 20px;
+  overflow: hidden;
 }
 ul {
 	padding: 0;
@@ -46,21 +69,21 @@ li {
 hr {
     border: 0;
     height: 1px;
-    background: #444;
-    background-image: linear-gradient(to right, #ccc, #444, #ccc);
+    background: #666;
+    background-image: linear-gradient(to right, #ccc, #666, #ccc);
 }
 .center {
 	text-align: center;
 }
 .opt_name {
-	padding-top: 3px;
+	padding-top: 5px;
 	float: left;
 }
 .hidden {
 	display: none;
 }
 .pwg_error {
-	border: 1px solid #c00!important;
+	border: 2px solid #c00;
 }
 #pwg_msg {
 	color: #c00;
@@ -88,7 +111,7 @@ hr {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #666;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -100,17 +123,17 @@ hr {
   width: 16px;
   left: 2px;
   bottom: 2px;
-  background-color: white;
+  background-color: #fff;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #09f;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #09f;
 }
 
 input:checked + .slider:before {

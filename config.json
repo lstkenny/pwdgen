@@ -1,0 +1,20 @@
+{
+	"config": {
+		"rememberSettings": "domains",
+		"rememberSecret": "session",
+		"sessionHours": 1,
+		"autocomplete": true,
+		"theme": "night"
+	},
+	"domains": {},
+	"default": {
+		"len": 12,
+		"digits": true,
+		"lower": true,
+		"upper": true,
+		"symbols": true,
+		"subdomains": false,
+		"exclude": "",
+		"similar": false
+	}
+}

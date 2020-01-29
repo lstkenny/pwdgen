@@ -1,0 +1,43 @@
+body {
+  color: #666;
+}
+input {
+  color: #222;
+}
+input:hover,
+input:focus,
+input:active {
+	border-color: #2196F3;
+}
+button {
+	background: #2196F3;
+	color: #fff;
+}
+a {
+	color: #2196F3;
+}
+a.icon {
+  color: #666;
+}
+hr {
+    background: #666;
+    background-image: linear-gradient(to right, #ccc, #666, #ccc);
+}
+.pwg_error {
+	border-color: #c00!important;
+}
+#pwg_msg {
+	color: #c00;
+}
+.slider {
+  background-color: #666;
+}
+.slider:before {
+  background-color: #fff;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}

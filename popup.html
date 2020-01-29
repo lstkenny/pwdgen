@@ -1,57 +1,53 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-
 	<title>Password generator extension popup</title>
 	<meta name="description" content="Password generator extension popup">
 	<meta name="author" content="lstkenny">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 	<link rel="stylesheet" href="css/styles.css">
-
+	<link rel="stylesheet" href="css/night.css" id="theme">
 </head>
-
 <body>
 	<div id="container">
+ 		<h4>
+ 			Password generator
+			<a href="#" class="icon" id="settings">&#9965;</a>
+		</h4>
 		<form id="pwg_config">
 			<ul>
-<!-- 				<li>
-					<span class="opt_name">URL</span>
-					<input name="url" value="" title="Page URL">
-				</li> -->
 				<li>
 					<span class="opt_name">Secret</span>
-					<input name="secret" value="" title="A secret word for random seed that only you know.">
+					<input name="secret" value="" placeholder="Secret word" title="A secret word for random seed that only you know.">
 				</li>
 				<li>
 					<span class="opt_name">Length</span>
-					<input name="len" value="10" title="Password length.">
+					<input name="len" value="10" placeholder="Password length" title="Password length.">
 				</li>
 				<li>
-					<span class="opt_name">Digits [123456...]</span>
+					<span class="opt_name">Digits [123456&hellip;]</span>
 					<label class="switch">
 						<input type="checkbox" name="digits" value="1" checked="checked">
 						<span class="slider" title="Include numbers: [0123456789]"></span>
 					</label>
 				</li>
 				<li>
-					<span class="opt_name">Letters [abcdef...]</span>
+					<span class="opt_name">Letters [abcdef&hellip;]</span>
 					<label class="switch">
 						<input type="checkbox" name="lower" value="1" checked="checked">
 						<span class="slider" title="Include lowercase letters: [abcdefghijklmnopqrstuvwxyz]"></span>
 					</label>
 				</li>
 				<li>
-					<span class="opt_name">Uppercase [ABCDEF...]</span>
+					<span class="opt_name">Uppercase [ABCDEF&hellip;]</span>
 					<label class="switch">
 						<input type="checkbox" name="upper" value="1" checked="checked">
 						<span class="slider" title="Include uppercase letters: [ABCDEFGHIJKLMNOPQRSTUVWXYZ]"></span>
 					</label>
 				</li>
 				<li>
-					<span class="opt_name">Symbols [!@#$%^...]</span>
+					<span class="opt_name">Symbols [!@#$%^&hellip;]</span>
 					<label class="switch">
 						<input type="checkbox" name="symbols" value="1">
 						<span class="slider" title="Use special symbols in password: [!@#$%^&*/-+=()&lt;&gt;[]{}_\\|.,:;\'&quot;`~']"></span>
@@ -61,13 +57,6 @@
 					<a href="#" id="pwg_more_options">More options</a>
 				</li>
 				<li class="hidden">
-					<span class="opt_name">Remember secret</span>
-					<label class="switch">
-						<input type="checkbox" name="savesecret" value="1">
-						<span class="slider" title="Remember secret word"></span>
-					</label>
-				</li>
-				<li class="hidden">
 					<span class="opt_name">Subdomains</span>
 					<label class="switch">
 						<input type="checkbox" name="subdomains" value="1">
@@ -75,7 +64,7 @@
 					</label>
 				</li>
 				<li class="hidden">
-					<span class="opt_name">Avoid similar (1, i, I, l, 0, O)</span>
+					<span class="opt_name">Avoid similar [1iIl0Oo&hellip;]</span>
 					<label class="switch">
 						<input type="checkbox" name="similar" value="1">
 						<span class="slider" title="Avoid similar characters (1, i, I, l, L), and (0, o, O)"></span>
@@ -83,7 +72,7 @@
 				</li>
 				<li class="hidden">
 					<span class="opt_name">Exclude</span>
-					<input name="exclude" value="" title="Type symbols you want to exclude from password.">
+					<input name="exclude" value="" placeholder="Exclude symbols" title="Type symbols you want to exclude from password.">
 				</li>
 				<li id="pwg_msg" class="center hidden">
 				</li>
@@ -101,6 +90,6 @@
 			</ul>
 		</form>
 	</div>
-	<script src="popup.js"></script>
+	<script type="module" src="./js/popup.js"></script>
 </body>
 </html>
