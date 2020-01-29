@@ -20,11 +20,13 @@ class PwdGen extends DataSet {
 				return this.storage.get("pwg")
 			})
 			.then(pwgState => {
-				["config", "default", "domains"].forEach(key => {
-					if (pwgState[key]) {
-						this.set(key, pwgState[key])
-					}
-				})
+				if (pwgState) {
+					["config", "default", "domains"].forEach(key => {
+						if (pwgState[key]) {
+							this.set(key, pwgState[key])
+						}
+					})
+				}
 				return Promise.resolve()
 			})
 	}
