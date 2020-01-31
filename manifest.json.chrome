@@ -17,6 +17,7 @@
 		"tabs",
 		"storage",
 		"clipboardWrite",
+		"cookies",
 		"*://*/*"
 	],
 	"browser_action": {
