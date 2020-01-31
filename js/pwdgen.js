@@ -27,10 +27,14 @@ class PwdGen extends DataSet {
 						}
 					})
 				}
+				return this.cookie.get("_pwg_secret")
+			})
+			.then(secret => {
+				this.set("cookies.secret", secret)
 				return Promise.resolve()
 			})
 	}
-	getState() {
+	saveState() {
 		const pwg = {}
 		pwg.config = this.clone("config", {})
 		//	save secret
@@ -61,7 +65,7 @@ class PwdGen extends DataSet {
 				pwg.domains[this.get("data.domain").replace(/\./g, "_")] = data
 			}
 		}
-		return pwg
+		this.storage.set("pwg", pwg)
 	}
 	extractHostName(url) {
 		//	remove www
@@ -103,16 +107,19 @@ class PwdGen extends DataSet {
 		let secret
 		switch (this.get("config.rememberSecret")) {
 			case "session" :
-				secret = this.cookie.get("_pwg_secret")
+				secret = this.get("cookies.secret")
 				break
 			case "remember" :
 				secret = this.get("config.secret")
 				break
 		}
 		if (!secret) {
-			secret = Math.floor(Math.random() * 1000000)
+			secret = this.randomSeed(100000, 999999)
 		}
 		this.set("data.secret", secret)
+	}
+	randomSeed(min, max) {
+		return Math.floor(Math.random() * (max - min)) + min
 	}
 	getSeed() {
 		const parts = []
@@ -176,7 +183,7 @@ class PwdGen extends DataSet {
 		}
 		this.set("data.domain", this.extractRootDomain(this.get("data.url")))
 		this.set("data.host", this.extractHostName(this.get("data.url")))
-		this.storage.set("pwg", this.getState())
+		this.saveState()
 		return this.updatePassword()
 	}
 }
