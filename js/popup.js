@@ -66,19 +66,24 @@ function updateResult() {
 	}
 	document.getElementById("pwg_res_pwd").value = pwg.getData("password")
 }
-function injectAutocomplete() {
+function autocomplete() {
 	if (typeof chrome.tabs != "undefined" && pwg.getConfig("autocomplete")) {
 		if (pwg.getData("url").match(/^http/i)) {
-			chrome.tabs.executeScript(null, {
-				code: "var _pwg_data = " + JSON.stringify(pwg.get("data"))
-			}, () => {
-				chrome.tabs.executeScript(
-					null, {
-						file: "./js/content.js"
-					}, () => chrome.runtime.lastError)
-			})
+			chrome.tabs.query({active: true, currentWindow: true}, 
+				tabs => chrome.tabs.sendMessage(tabs[0].id, {"sender": "pwg", "data": pwg.get("data")}))
 		}
 	}
+}
+function injectAutocomplete() {
+	return new Promise((resolve, reject) => {
+		if (typeof chrome.tabs == "undefined" || !pwg.getConfig("autocomplete")) {
+			resolve()
+		}
+		chrome.tabs.executeScript(
+			null, {
+				file: "./js/content.js"
+			}, () => resolve(chrome.runtime.lastError))
+		})
 }
 function getUrl() {
 	return new Promise((resolve, reject) => {
@@ -104,13 +109,14 @@ function generatePassword(url) {
 	if (options) {
 		pwg.generate(options)
 		updateResult()
-		injectAutocomplete()
+		autocomplete()
 	}
 }
 let pwg
 document.addEventListener("DOMContentLoaded", e => {
 	pwg = new PwdGen()
 	pwg.init()
+		.then(() => injectAutocomplete())
 		.then(() => getUrl())
 		.then(url => {
 			document.getElementById("theme").href = "css/" + pwg.getConfig("theme") + ".css"
