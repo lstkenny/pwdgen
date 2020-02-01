@@ -17,7 +17,7 @@ function validateOptions(options, controls) {
 		error = "Select at least one of symbols group (digits, letters, uppercase or symbols)"
 	}
 	if (error) {
-		document.getElementById("pwg_msg").innerHTML = error
+		document.getElementById("pwg_msg").textContent = error
 		document.getElementById("pwg_msg").style.display = "block"
 		document.getElementById("pwg_res_pwd").value = ""
 		return false
