@@ -67,7 +67,7 @@ function updateResult() {
 	document.getElementById("pwg_res_pwd").value = pwg.getData("password")
 }
 function autocomplete() {
-	if (typeof chrome.tabs != "undefined" && pwg.getConfig("autocomplete")) {
+	if (typeof chrome != "undefined" && chrome.tabs && pwg.getConfig("autocomplete")) {
 		if (pwg.getData("url").match(/^http/i)) {
 			chrome.tabs.query({active: true, currentWindow: true}, 
 				tabs => chrome.tabs.sendMessage(tabs[0].id, {"sender": "pwg", "data": pwg.get("data")}))
@@ -76,18 +76,19 @@ function autocomplete() {
 }
 function injectAutocomplete() {
 	return new Promise((resolve, reject) => {
-		if (typeof chrome.tabs == "undefined" || !pwg.getConfig("autocomplete")) {
-			resolve()
+		if (typeof chrome != "undefined" && chrome.tabs && pwg.getConfig("autocomplete")) {
+			chrome.tabs.executeScript(
+				null, {
+					file: "./js/content.js"
+				}, () => resolve(chrome.runtime.lastError))
+		} else {
+			resolve(false)
 		}
-		chrome.tabs.executeScript(
-			null, {
-				file: "./js/content.js"
-			}, () => resolve(chrome.runtime.lastError))
-		})
+	})
 }
 function getUrl() {
 	return new Promise((resolve, reject) => {
-		if (typeof chrome.tabs != "undefined") {
+		if (typeof chrome != "undefined" && chrome.tabs) {
 			//	run as an extension
 			chrome.tabs.query({
 				"currentWindow": true,
@@ -141,7 +142,7 @@ document.getElementById("pwg_res_pwd").addEventListener("click", e => {
 	document.execCommand("copy")
 })
 document.getElementById("settings").addEventListener("click", e => {
-	if (typeof chrome.tabs != "undefined") {
+	if (typeof chrome != "undefined" && chrome.tabs) {
 		chrome.tabs.create({"url": "./options.html" } )
 	}
 })

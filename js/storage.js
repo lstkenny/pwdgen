@@ -3,7 +3,7 @@ export { Storage }
 class Storage {
 
 	constructor() {
-		this.isChromeStorage = (typeof chrome.storage != "undefined")
+		this.isChromeStorage = (typeof chrome != "undefined" && chrome.storage)
 	}
 	get(key, deflt) {
 		deflt = deflt || null

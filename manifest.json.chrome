@@ -1,6 +1,6 @@
 {
 	"name": "Password generator",
-	"version": "0.0.0.3",
+	"version": "0.0.0.4",
 	"manifest_version": 2,
 	"description": "This app procedurally generates you a strong unique password using secret word with domain as a generator seed.",
 	"author": {

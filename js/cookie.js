@@ -1,9 +1,10 @@
 export { Cookie }
 
 class Cookie {
+
 	constructor() {
 		this.url = "http://pwdgenextension"
-		this.isChromeCookie = (typeof chrome.cookies != "undefined")
+		this.isChromeCookie = (typeof chrome != "undefined" && chrome.cookies)
 	}
 	buildCookieHeader(cookie) {
 		let header = cookie.name + "=" + (cookie.value || "");

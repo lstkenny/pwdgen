@@ -34,9 +34,15 @@ class PwdGen extends DataSet {
 				return Promise.resolve()
 			})
 	}
-	saveState() {
+	saveState(options) {
 		const pwg = {}
 		pwg.config = this.clone("config", {})
+		//	set current options
+		for (let key in options) {
+			this.set("data." + key, options[key])	
+		}
+		this.set("data.domain", this.extractRootDomain(this.get("data.url")))
+		this.set("data.host", this.extractHostName(this.get("data.url")))
 		//	save secret
 		switch (this.get("config.rememberSecret")) {
 			case "session" :
@@ -60,9 +66,11 @@ class PwdGen extends DataSet {
 				}
 			})
 			pwg.default = data
+			this.set('default', data)
 			if (this.get("data.domain") && this.get("config.rememberSettings") == "domains") {
 				pwg.domains = this.clone("domains", {})
 				pwg.domains[this.get("data.domain").replace(/\./g, "_")] = data
+				this.set('domains', pwg.domains)
 			}
 		}
 		this.storage.set("pwg", pwg)
@@ -100,7 +108,7 @@ class PwdGen extends DataSet {
 	}
 	setUrl(url) {
 		const domain = this.extractRootDomain(url)
-		const data = this.get("domains." + domain.replace(/\./g, "_"), this.get("default"))
+		const data = this.clone("domains." + domain.replace(/\./g, "_"), this.get("default"))
 		this.set("data", data)
 		this.set("data.url", url)
 		this.set("data.domain", domain)
@@ -178,12 +186,7 @@ class PwdGen extends DataSet {
 		return pwd
 	}
 	generate(options) {
-		for (let key in options) {
-			this.set("data." + key, options[key])	
-		}
-		this.set("data.domain", this.extractRootDomain(this.get("data.url")))
-		this.set("data.host", this.extractHostName(this.get("data.url")))
-		this.saveState()
+		this.saveState(options)
 		return this.updatePassword()
 	}
 }

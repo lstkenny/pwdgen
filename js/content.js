@@ -1,4 +1,4 @@
-if (typeof chrome.runtime !== 'undefined') {
+if (typeof chrome !== 'undefined' && chrome.runtime) {
 	chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		if (request.sender == "pwg") {
 			let pwdfields = document.querySelectorAll('[type="password"]')
