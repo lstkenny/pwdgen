@@ -13,17 +13,17 @@ class PwdGen extends DataSet {
 		this.srand = new SRand()
 	}
 	init() {
-		return fetch('./config.json')
+		return fetch("./config.json")
 			.then(response => response.json())
 			.then(defaultConfig => {
 				this.set(defaultConfig)
 				return this.storage.get("pwg")
 			})
-			.then(pwgState => {
-				if (pwgState) {
+			.then(pwg => {
+				if (pwg) {
 					["config", "default", "domains"].forEach(key => {
-						if (pwgState[key]) {
-							this.set(key, pwgState[key])
+						if (pwg[key]) {
+							this.set(key, pwg[key])
 						}
 					})
 				}
@@ -34,15 +34,9 @@ class PwdGen extends DataSet {
 				return Promise.resolve()
 			})
 	}
-	saveState(options) {
+	saveState() {
 		const pwg = {}
-		pwg.config = this.clone("config", {})
-		//	set current options
-		for (let key in options) {
-			this.set("data." + key, options[key])	
-		}
-		this.set("data.domain", this.extractRootDomain(this.get("data.url")))
-		this.set("data.host", this.extractHostName(this.get("data.url")))
+		pwg.config = this.clone("config")
 		//	save secret
 		switch (this.get("config.rememberSecret")) {
 			case "session" :
@@ -66,65 +60,64 @@ class PwdGen extends DataSet {
 				}
 			})
 			pwg.default = data
-			this.set('default', data)
+			this.set("default", data)
 			if (this.get("data.domain") && this.get("config.rememberSettings") == "domains") {
 				pwg.domains = this.clone("domains", {})
 				pwg.domains[this.get("data.domain").replace(/\./g, "_")] = data
-				this.set('domains', pwg.domains)
+				this.set("domains", pwg.domains)
 			}
 		}
 		this.storage.set("pwg", pwg)
 	}
-	extractHostName(url) {
-		//	remove www
-		url = url.replace("www.", "")
-		let hostname
-		//	find & remove protocol (http, ftp, etc.) and get hostname
-		if (url.indexOf("//") > -1) {
-			hostname = url.split("/")[2]
-		} else {
-			hostname = url.split("/")[0]
-		}
-		//	find & remove port number
-		hostname = hostname.split(":")[0]
-		//	find & remove "?"
-		hostname = hostname.split("?")[0]
-		return hostname.toLowerCase()
+	extractHostName(href) {
+		const url = new URL(href)
+		return url.hostname.toLowerCase()
 	}
 	extractRootDomain(url) {
 		let domain = this.extractHostName(url)
-		const domainParts = domain.split(".")
+		let domainParts = domain.split(".")
 		const partsLength = domainParts.length
-		//	extracting the root domain here if there is a subdomain 
-		if (partsLength > 2) {
-			domain = domainParts[partsLength - 2] + "." + domainParts[partsLength - 1]
-			//	check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-			if (domainParts[partsLength - 2].length == 2 && domainParts[partsLength - 1].length == 2) {
-				//	this is using a ccTLD
-				domain = domainParts[partsLength - 3] + "." + domain
+		let partsCount = 2
+		if (partsLength > 1) {
+			const sld = [
+				"ac","co","com","org","net",
+				"biz","info","pro","int","coop",
+				"jobs","mobi","travel","museum",
+				"aero","tel","name","charity",
+				"mil","edu","gov"]
+			if (sld.indexOf(domainParts[partsLength - 2]) > -1) {
+				partsCount = 3
 			}
 		}
-		return domain
+		return domainParts.slice(Math.max(partsLength - partsCount, 0)).join(".")
+	}
+	setOptions(options) {
+		for (let key in options) {
+			this.set("data." + key, options[key])
+		}
+		if (!this.get("data.secret")) {
+			let secret
+			switch (this.get("config.rememberSecret")) {
+				case "session" :
+					secret = this.get("cookies.secret")
+					break
+				case "remember" :
+					secret = this.get("config.secret")
+					break
+			}
+			if (!secret) {
+				secret = this.randomSeed(100000, 999999)
+			}
+			this.set("data.secret", secret)
+		}
 	}
 	setUrl(url) {
 		const domain = this.extractRootDomain(url)
-		const data = this.clone("domains." + domain.replace(/\./g, "_"), this.get("default"))
-		this.set("data", data)
-		this.set("data.url", url)
-		this.set("data.domain", domain)
-		let secret
-		switch (this.get("config.rememberSecret")) {
-			case "session" :
-				secret = this.get("cookies.secret")
-				break
-			case "remember" :
-				secret = this.get("config.secret")
-				break
-		}
-		if (!secret) {
-			secret = this.randomSeed(100000, 999999)
-		}
-		this.set("data.secret", secret)
+		const options = this.clone("domains." + domain.replace(/\./g, "_"), this.get("default"))
+		options.url = url
+		options.domain = domain
+		options.host = this.extractHostName(url)
+		this.setOptions(options)
 	}
 	randomSeed(min, max) {
 		return Math.floor(Math.random() * (max - min)) + min
@@ -186,6 +179,7 @@ class PwdGen extends DataSet {
 		return pwd
 	}
 	generate(options) {
+		this.setOptions(options)
 		this.saveState(options)
 		return this.updatePassword()
 	}

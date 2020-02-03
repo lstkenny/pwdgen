@@ -44,29 +44,29 @@ function getOptions() {
 	})
 	return validateOptions(options, controls)
 }
-function updateOptions() {
+function updateOptions(options) {
 	document.querySelectorAll("input").forEach(control => {
 		if (!control.name) {
 			return
 		}
 		switch (control.type) {
 			case "checkbox":
-				control.checked = Boolean(pwg.getData(control.name))
+				control.checked = Boolean(options[control.name])
 				break
 			default:
-				control.value = pwg.getData(control.name) || ""
+				control.value = options[control.name] || ""
 		}
 	})
 }
-function updateResult() {
-	if (pwg.getData("subdomains")) {
-		document.getElementById("pwg_res_domain").value = pwg.getData("host")
+function updateResult(result) {
+	if (result.subdomains) {
+		document.getElementById("pwg_res_domain").value = result.host || ""
 	} else {
-		document.getElementById("pwg_res_domain").value = pwg.getData("domain")
+		document.getElementById("pwg_res_domain").value = result.domain || ""
 	}
-	document.getElementById("pwg_res_pwd").value = pwg.getData("password")
+	document.getElementById("pwg_res_pwd").value = result.password || ""
 }
-function autocomplete() {
+function autocomplete(pwg) {
 	if (typeof chrome != "undefined" && chrome.tabs && pwg.getConfig("autocomplete")) {
 		if (pwg.getData("url").match(/^http/i)) {
 			chrome.tabs.query({active: true, currentWindow: true}, 
@@ -104,13 +104,13 @@ function getUrl() {
 function generatePassword(url) {
 	if (url) {
 		pwg.setUrl(url)
-		updateOptions()
+		updateOptions(pwg.get("data"))
 	}
 	const options = getOptions()
 	if (options) {
 		pwg.generate(options)
-		updateResult()
-		autocomplete()
+		updateResult(pwg.get("data"))
+		autocomplete(pwg)
 	}
 }
 let pwg
