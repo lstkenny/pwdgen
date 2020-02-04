@@ -2,15 +2,15 @@ export { Cookie }
 
 class Cookie {
 
-	constructor() {
-		this.url = "http://pwdgenextension"
+	constructor(url) {
+		this.url = url
 		this.isChromeCookie = (typeof chrome != "undefined" && chrome.cookies)
 	}
 	buildCookieHeader(cookie) {
 		let header = cookie.name + "=" + (cookie.value || "");
 		if (cookie.expirationDate) {
 			const date = new Date()
-			date.setTime(cookie.expirationDate)
+			date.setTime(cookie.expirationDate * 1000)
 			header += "; expires=" + date.toUTCString()
 		}
 		header += "; path=/"
@@ -38,7 +38,7 @@ class Cookie {
 			"path": "/"
 		}
 		if (hours) {
-			cookie.expirationDate = Date.now() + hours * 60 * 60 * 1000
+			cookie.expirationDate = Math.floor(Date.now() / 1000 + hours * 60 * 60)
 		}
 		return new Promise((resolve, reject) => {
 			if (this.isChromeCookie) {
