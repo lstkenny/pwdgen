@@ -16,8 +16,30 @@ function updateControls(config) {
 		}
 	})
 }
+function validateConfig(config, controls) {
+	let error = false
+	if (isNaN(parseFloat(config.sessionHours)) || !isFinite(config.sessionHours)) {
+		controls.sessionHours.classList.add("pwg_error")
+		error = "Session length must be a number"
+	} else if (config.sessionHours < 1 || config.sessionHours > 24) {
+		controls.sessionHours.classList.add("pwg_error")
+		error = "Password length must be a number between 1 and 24"
+	}
+	if (error) {
+		document.getElementById("pwg_msg").textContent = error
+		document.getElementById("pwg_msg").style.display = "block"
+		return false
+	}
+	document.getElementById("pwg_msg").style.display = "none"
+	if (!config.theme) {
+		config.theme = "light"
+	}
+	config.autocomplete = Boolean(config.autocomplete)
+	return config;
+}
 function getControlsData() {
 	const config = {}
+	const controls = {}
 	document.querySelectorAll("input").forEach(control => {
 		switch (control.type) {
 			case "radio" :
@@ -29,12 +51,10 @@ function getControlsData() {
 			default:
 				config[control.name] = control.value
 		}
+		control.classList.remove("pwg_error")
+		controls[control.name] = control
 	})
-	if (!config.theme) {
-		config.theme = "light"
-	}
-	config.autocomplete = Boolean(config.autocomplete)
-	return config;
+	return validateConfig(config, controls)
 }
 function toggleSessionInput(control) {
 	if (control.value == "session" && control.checked) {
@@ -68,8 +88,11 @@ document.querySelectorAll("input").forEach(control => {
 	control.addEventListener("input", e => {
 		storage.get("pwg", defaultConfig)
 			.then(state => {
-				state.config = Object.assign(state.config, getControlsData())
-				storage.set("pwg", state)
+				const config = getControlsData()
+				if (config) {
+					state.config = Object.assign(state.config, config)
+					storage.set("pwg", state)
+				}
 			})
 	})
 })
