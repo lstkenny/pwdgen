@@ -67,7 +67,7 @@ function toggleSessionInput(control) {
 let storage, defaultConfig
 
 document.addEventListener("DOMContentLoaded", e => {
-	storage = new Storage()
+	storage = new Storage("sync")
 	fetch("./config.json")
 		.then(response => response.json())
 		.then(data => {

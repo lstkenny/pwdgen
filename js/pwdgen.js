@@ -1,15 +1,15 @@
-import { Storage } from "./storage.js"
-import { Cookie } from "./cookie.js"
-import { SRand } from "./srand.js"
 import { DataSet } from "./dataset.js"
+import { Storage } from "./storage.js"
+import { Session } from "./session.js"
+import { SRand } from "./srand.js"
 export { PwdGen }
 
 class PwdGen extends DataSet {
 
 	constructor(state) {
 		super()
-		this.storage = new Storage()
-		this.cookie = new Cookie("http://pwdgenextension")
+		this.storage = new Storage("sync")
+		this.session = new Session()
 		this.srand = new SRand()
 	}
 	init() {
@@ -27,10 +27,10 @@ class PwdGen extends DataSet {
 						}
 					})
 				}
-				return this.cookie.get("_pwg_secret")
+				return this.session.get("_pwg_secret")
 			})
 			.then(secret => {
-				this.set("cookies.secret", secret)
+				this.set("session_secret", secret)
 				return Promise.resolve()
 			})
 	}
@@ -112,7 +112,7 @@ class PwdGen extends DataSet {
 	saveSecret() {
 		switch (this.get("config.rememberSecret")) {
 			case "session" :
-				this.cookie.set("_pwg_secret", this.get("data.secret"), this.get("config.sessionHours", 1))
+				this.session.set("_pwg_secret", this.get("data.secret"), this.get("config.sessionHours", 1))
 				break
 			case "remember" :
 				this.set("config.secret", this.get("data.secret"))
@@ -168,7 +168,7 @@ class PwdGen extends DataSet {
 			let secret
 			switch (this.get("config.rememberSecret")) {
 				case "session" :
-					secret = this.get("cookies.secret")
+					secret = this.get("session_secret")
 					break
 				case "remember" :
 					secret = this.get("config.secret")
