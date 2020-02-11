@@ -1,9 +1,9 @@
 {
 	"config": {
-		"rememberSettings": "domains",
-		"rememberSecret": "session",
+		"rememberSettings": false,
+		"rememberSecret": false,
 		"sessionHours": 1,
-		"autocomplete": true,
+		"autocomplete": false,
 		"theme": "night"
 	},
 	"domains": {},
