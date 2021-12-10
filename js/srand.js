@@ -43,8 +43,11 @@ class SRand {
 		this.bias = Math.pow(this.bias, 2) % this.base
 		return this.bias / this.base * (max - min) + min
 	}
+	rndInteger(...args) {
+		return Math.floor(this.rndFloat(...args))
+	}
 	rndArrayKey(arr) {
-		return Math.floor(this.rndFloat(arr.length))
+		return this.rndInteger(arr.length)
 	}
 	rndArrayValue(arr) {
 		return arr[this.rndArrayKey(arr)]
